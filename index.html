@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boggler — a Boggle trainer</title>
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+
+</head>
+
+<body>
+  <header id="header">
+    <div>
+      <h1>Boggler</h1>
+      <h2>Boggle training, by <a href="https://jamescalixto.com">James Calixto</a></h2>
+    </div>
+  </header>
+
+  <div id="float-nav">
+    <div id="timer-box">
+      <div id="timer"></div>
+      <div id="timer-skip">
+        <a href="#" onclick="skipStage();return false;">(skip)</a>
+      </div>
+    </div>
+    <div id="message-box">
+      <div id="message"></div>
+      <div id="message-again">
+        Again?
+        <a href="#" onclick="newGame(3, 2);return false;">03</a>
+        <a href="#" onclick="newGame(5, 2);return false;">05</a>
+        <a href="#" onclick="newGame(8, 2);return false;">08</a>
+        <a href="#" onclick="newGame(12, 2);return false;">12</a>
+        <a href="#" onclick="newGame(16, 2);return false;">16</a>
+        <a href="#" onclick="newGame(20, 2);return false;">20</a>
+        <a href="#" onclick="newGame(24, 2);return false;">24</a>
+        <a href="#" onclick="newGame(30, 2);return false;">30</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="body-container">
+    <div id="memorize-template" class="card">
+      <img id="memorize-template-face" class="card-face" src="" />
+      <div id="memorize-template-label" class="card-label"></div>
+    </div>
+    <div id="recall-template" class="card">
+      <img id="recall-template-face" class="card-face" src="" />
+      <input id="recall-template-form" class="card-form"></div>
+    <div id="result-template" class="card">
+      <img id="result-template-face" class="card-face" src="" />
+      <div id="result-template-label" class="card-label recall-label"></div>
+    </div>
+
+    <div id="memorize">
+    </div>
+    <div id="recall">
+    </div>
+    <div id="result">
+    </div>
+  </div>
+
+
+  <script src="js/papaparse.js" type="text/javascript"></script>
+  <script src="js/alea.js" type="text/javascript"></script>
+  <script src="js/helper.js" type="text/javascript"></script>
+  <script src="js/game.js" type="text/javascript"></script>
+  <script src="js/render.js" type="text/javascript"></script>
+  <script src="js/main.js" type="text/javascript"></script>
+  <script>
+    var files = [
+      ["../face-memory/data/face_gender.txt", "face_gender"],
+      ["../face-memory/data/female_names.csv", "female_names"],
+      ["../face-memory/data/male_names.csv", "male_names"]
+    ];
+    var parsed_files = {};
+    for (let file of files) {
+      Papa.parse(file[0], {
+        delimiter: ',',
+        download: true,
+        header: false,
+        complete: function (results) {
+          parsed_files[file[1]] = results;
+          if (Object.keys(parsed_files).length == files.length) {
+            parsed_files["face_gender"] = parsed_files["face_gender"].data.flat();
+            parsed_files["female_names"] = parsed_files["female_names"].data;
+            parsed_files["male_names"] = parsed_files["male_names"].data;
+            setUp(parsed_files["face_gender"], parsed_files["female_names"], parsed_files["male_names"])
+          }
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

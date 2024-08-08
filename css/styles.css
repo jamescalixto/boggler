@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Playfair+Display:700|PT+Serif:400,400i|Roboto:400");
+@import url("https://fonts.googleapis.com/css?family=Playfair+Display:700|PT+Serif:400,400i|Roboto:700");
 
 :root {
     --red: #f08080;
@@ -25,8 +25,6 @@
 .gray {
     background-color: var(--gray);
 }
-
-
 
 h1 {
     margin-bottom: 0px;
@@ -74,101 +72,62 @@ header {
     transition: filter 0.1s;
 }
 
-#about {
-    color: var(--color-text-light);
-}
-
-#float-nav {
-    position: sticky;
-    top: 0;
-    width: 100%;
-    height: 60px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background-color: whitesmoke;
-}
-
-#timer-box {
-    margin: 20px;
-}
-
-#timer {
-    font-size: 1.6em;
-}
-
-#timer-skip a {
-    color: var(--color-text-gray);
-}
-
-#message {
-    font-size: 1.6em;
-}
-
-#message-again {
-    font-size: 1.1em;
-}
-
-#message-again a {
-    color: var(--color-text-gray);
-}
-
-h2 a:hover:active {
-    color: var(--red);
-}
-
-#body-container {
+#container-main {
+    max-width: 600px;
+    width: 90%;
     margin: 0px auto;
-    max-width: 1200px;
 }
 
-#memorize,
-#recall,
-#result {
+#container-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-#memorize-template,
-#recall-template,
-#result-template {
-    display: none;
+.grid-letter {
+    display: flex;
+    width: 18%;
+    aspect-ratio : 1 / 1;
+    margin: 2px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: whitesmoke;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 10vw;
 }
 
-.card {
-    width: 128px;
-    height: 160px;
-    margin: 8px;
+#container-input {
+    margin: 10px auto;
     text-align: center;
 }
 
-.card-face {
-    width: 128px;
-    margin: 0px;
-}
-
-.card-label,
-.card-form {
-    font-size: 1.2em;
-    font-family: "Roboto", Arial, Helvetica, sans-serif;
-}
-
-.card-label {
-    margin-top: 2px;
-}
-
-.recall-label {
-    padding: 2px;
-}
-
-
-.card-form {
-    width: 90%;
-    margin-top: 4px;
+#input-display {
+    max-width: 600px;
+    height: 8vw;
     text-align: center;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 8vw;
+}
+
+#container-answers {
+    max-width: 600px;
+    text-align: center;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 4vw;
+}
+
+@media (min-width: 600px) {
+    .grid-letter  {
+        font-size: 4em;
+    }
+    #input-display {
+        height: 1.2em;
+        font-size: 3em;
+    }
+    #container-answers {
+        font-size: 1em;
+    }
 }
 
 .hidden {

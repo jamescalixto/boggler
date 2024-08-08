@@ -19,80 +19,42 @@
     </div>
   </header>
 
-  <div id="float-nav">
-    <div id="timer-box">
-      <div id="timer"></div>
-      <div id="timer-skip">
-        <a href="#" onclick="skipStage();return false;">(skip)</a>
-      </div>
-    </div>
-    <div id="message-box">
-      <div id="message"></div>
-      <div id="message-again">
-        Again?
-        <a href="#" onclick="newGame(3, 2);return false;">03</a>
-        <a href="#" onclick="newGame(5, 2);return false;">05</a>
-        <a href="#" onclick="newGame(8, 2);return false;">08</a>
-        <a href="#" onclick="newGame(12, 2);return false;">12</a>
-        <a href="#" onclick="newGame(16, 2);return false;">16</a>
-        <a href="#" onclick="newGame(20, 2);return false;">20</a>
-        <a href="#" onclick="newGame(24, 2);return false;">24</a>
-        <a href="#" onclick="newGame(30, 2);return false;">30</a>
-      </div>
-    </div>
-  </div>
-
-  <div id="body-container">
-    <div id="memorize-template" class="card">
-      <img id="memorize-template-face" class="card-face" src="" />
-      <div id="memorize-template-label" class="card-label"></div>
-    </div>
-    <div id="recall-template" class="card">
-      <img id="recall-template-face" class="card-face" src="" />
-      <input id="recall-template-form" class="card-form"></div>
-    <div id="result-template" class="card">
-      <img id="result-template-face" class="card-face" src="" />
-      <div id="result-template-label" class="card-label recall-label"></div>
+  <div id="container-main">
+    <div id="container-settings">
     </div>
 
-    <div id="memorize">
+    <div id="container-grid">
     </div>
-    <div id="recall">
+
+    <div id="container-ui">
+      <div id="button-settings"></div>
+      <div id="container-timer"></div>
+      <div id="button-new-game"></div>
     </div>
-    <div id="result">
+
+    <div id="container-input">
+      <div id="input-display"></div>
+    </div>
+
+    <div id="container-answers">
     </div>
   </div>
 
 
-  <script src="js/papaparse.js" type="text/javascript"></script>
-  <script src="js/alea.js" type="text/javascript"></script>
-  <script src="js/helper.js" type="text/javascript"></script>
-  <script src="js/game.js" type="text/javascript"></script>
-  <script src="js/render.js" type="text/javascript"></script>
+  <script src="libs/alea.min.js" type="text/javascript"></script>
+  <script src="libs/papaparse.js" type="text/javascript"></script>
+  <script src="js/constants.js" type="text/javascript"></script>
+  <script src="js/grid.js" type="text/javascript"></script>
+  <script src="js/interface.js" type="text/javascript"></script>
   <script src="js/main.js" type="text/javascript"></script>
   <script>
-    var files = [
-      ["../face-memory/data/face_gender.txt", "face_gender"],
-      ["../face-memory/data/female_names.csv", "female_names"],
-      ["../face-memory/data/male_names.csv", "male_names"]
-    ];
-    var parsed_files = {};
-    for (let file of files) {
-      Papa.parse(file[0], {
-        delimiter: ',',
-        download: true,
-        header: false,
-        complete: function (results) {
-          parsed_files[file[1]] = results;
-          if (Object.keys(parsed_files).length == files.length) {
-            parsed_files["face_gender"] = parsed_files["face_gender"].data.flat();
-            parsed_files["female_names"] = parsed_files["female_names"].data;
-            parsed_files["male_names"] = parsed_files["male_names"].data;
-            setUp(parsed_files["face_gender"], parsed_files["female_names"], parsed_files["male_names"])
-          }
-        }
-      });
-    }
+    Papa.parse("../data/wordlist.txt", {
+      download: true,
+      complete: function (result) {
+        let wordlist = result.data.flat();
+        setUp(wordlist);
+      },
+    });
   </script>
 </body>
 

@@ -17,9 +17,18 @@ function lpad(i) {
     return String(i).padStart(3, '0');
 }
 
+// Right pad to one decimal.
+function pct(x, y) {
+    let r = 100*x/y;
+    return (Math.round(r * 10) / 10).toFixed(1);
+}
+
 // Done or new game setup.
 function setUpDoneOrNew() {
     var ng = document.getElementById("button-new-game");
+    var new_ng = ng.cloneNode(true);
+    ng.parentNode.replaceChild(new_ng, ng);  // get rid of listeners.
+    ng = document.getElementById("button-new-game");
     if (global_canEnterWords) { // game in progress - end game.
         ng.innerText = "end";
         ng.addEventListener("click", () => reveal());
@@ -101,12 +110,27 @@ function enterWord() {
         } else if (!global_words.has(word)) {
             displayMessage("not a valid word!", false);
         } else {
+            incrementScore(scoreWord(global_grid, word));
             displayMessage(congratulateWord(word));
             enterWordInterface(word);
+            global_foundWords.add(word);
         }
         holder.innerText = "";
     }
 }
+
+// Update score.
+function updateScore(s) {
+    let holder = element("container-score");
+    holder.innerText = lpad(s);
+}
+
+// Update score.
+function incrementScore(i) {
+    let holder = element("container-score");
+    updateScore(parseInt(holder.innerText) + i);
+}
+
 
 // Add word to interface.
 function enterWordInterface(word, gray=false) {
@@ -118,7 +142,6 @@ function enterWordInterface(word, gray=false) {
         newAnswer.classList.add("text-gray");
     }
     answers.appendChild(newAnswer);
-    global_foundWords.add(word);
 }
 
 
@@ -184,18 +207,22 @@ function reveal() {
     clearTimeout(global_gameTimer);
     clearInterval(global_gameTick);
     toggleInput(false);
+    let totalScore = 0;
     for (let word of global_words) {
+        totalScore += scoreWord(global_grid, word);
         if (!global_foundWords.has(word)) {
             enterWordInterface(word, true);
         }
     }
-    displayMessage("time's up!");
+    foundScore = parseInt(element("container-score").innerText);
+    displayMessage(`time's up! ${global_foundWords.size}/${global_words.size} (${pct(global_foundWords.size, global_words.size)}%) words, ${foundScore}/${totalScore} (${pct(foundScore, totalScore)}%) points`);
     setUpDoneOrNew();
 }
 
 
 // Start new game.
 function newGameInterface(letters) {
+    updateScore(0);
     displayMessage("new game..."); // clear messages.
     global_foundWords = new Set(); // clear found words.
     element("container-answers").replaceChildren(); // clear answers.

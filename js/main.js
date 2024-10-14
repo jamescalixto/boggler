@@ -30,14 +30,10 @@ function setUp(wordlist) {
 function newGame(wordlist) {
     let grid = generateGrid(DICE_SETS["Boggle Deluxe (5x5)"], Date.now());
     global_grid = grid;
-    
     adjacency = buildAdjacency(grid.length);
-
     words = getWordsInGrid(grid, wordlist, global_trie, adjacency);
     global_words = words;
-
     heatmap = buildHeatmap(grid, wordlist, global_trie, adjacency);
-
     newGameInterface(grid);
 }
 

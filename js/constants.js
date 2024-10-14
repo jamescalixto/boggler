@@ -1,5 +1,5 @@
 // Timer lengths and conversion.
-var TIMER_LENGTH = 5;
+var TIMER_LENGTH = 120;
 var S_TO_MS = 1000;
 
 // Word scoring function.

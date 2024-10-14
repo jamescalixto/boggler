@@ -27,8 +27,8 @@
     </div>
 
     <div id="container-ui">
-      <div id="button-settings">set</div>
-      <div id="container-timer">timer</div>
+      <div id="container-score">000</div>
+      <div id="container-timer">000</div>
       <div id="button-new-game">new</div>
     </div>
     <div id="container-notifications"></div>
@@ -54,7 +54,6 @@
       complete: function (result) {
         let wordlist = result.data.flat();
         setUp(wordlist);
-
         setUpDoneOrNew();
       },
     });

@@ -89,21 +89,21 @@ function isLetter(key) {
 // Add letter to entry.
 function addLetterEntry(letter) {
     let holder = element("input-display");
-    holder.innerText += letter.toUpperCase();
+    holder.value += letter.toUpperCase();
 }
 
 // Remove letter from entry.
 function removeLetterEntry() {
     let holder = element("input-display");
-    if (holder.innerText.length > 0) {
-        holder.innerText = holder.innerText.slice(0, -1);
+    if (holder.value.length > 0) {
+        holder.value = holder.value.slice(0, -1);
     }
 }
 
 // Enter word.
 function enterWord() {
     let holder = element("input-display");
-    let word = holder.innerText;
+    let word = holder.value;
     if (word.length > 0) {
         if (global_foundWords.has(word)) {
             displayMessage("already found!", false);
@@ -115,7 +115,7 @@ function enterWord() {
             enterWordInterface(word);
             global_foundWords.add(word);
         }
-        holder.innerText = "";
+        holder.value = "";
     }
 }
 

@@ -136,7 +136,7 @@ header {
 
 #input-display {
     margin: 10px auto;
-    max-width: 600px;
+    width: 90%;
     height: 8vw;
     text-align: center;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;

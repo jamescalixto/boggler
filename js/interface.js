@@ -66,37 +66,18 @@ function tickClock() {
 
 // Allow or disallow input.
 function toggleInput(state=null) {
+    let inputDisplay = element("input-display");
     if (state === null) {
         global_canEnterWords = !global_canEnterWords;
     } else {
         global_canEnterWords = state;
     }
     if (global_canEnterWords) {
-        element("input-display").classList.remove("hidden");
+        inputDisplay.classList.remove("hidden");
+        inputDisplay.disabled = false;
     } else {
-        element("input-display").classList.add("hidden");
-    }
-}
-
-// Test if a key is a letter.
-function isLetter(key) {
-    return (
-        key.length == 1 && "ABCDEFGHIJKLMNOPQRSTUVWXYZ".includes(key.toUpperCase())
-    );
-}
-
-
-// Add letter to entry.
-function addLetterEntry(letter) {
-    let holder = element("input-display");
-    holder.value += letter.toUpperCase();
-}
-
-// Remove letter from entry.
-function removeLetterEntry() {
-    let holder = element("input-display");
-    if (holder.value.length > 0) {
-        holder.value = holder.value.slice(0, -1);
+        inputDisplay.classList.add("hidden");
+        inputDisplay.disabled = true;
     }
 }
 
@@ -161,25 +142,16 @@ function displayMessage(message, good=true) {
 
 // Set up keyboard input function.
 function setUpKeyboardInput() {
-    document.addEventListener("keydown", function (e) {
-        // Only input letters or recognize backspaces and enter keys.
-        // Don't recognize it when popups or dropdown are active.
-        if (global_canEnterWords) {
-            if (isLetter(e.key)) {
-                event.preventDefault();
-                addLetterEntry(e.key);
-            } else if (e.key == "Backspace") {
-                event.preventDefault();
-                removeLetterEntry();
-            } else if (e.key == "Enter") {
-                event.preventDefault();
-                enterWord();
-            } else {
-                event.preventDefault();
-            }
-        }
+    let inputDisplay = element("input-display");
+    inputDisplay.addEventListener("input", () => {
+        inputDisplay.value = inputDisplay.value.toUpperCase();
+        inputDisplay.value = inputDisplay.value.replace(/[^A-Z]/g, "");
     });
-  }
+    inputDisplay.addEventListener("change", () => {
+        enterWord();
+    });
+}
+
 
 
 // Build grid.
@@ -196,7 +168,7 @@ function buildGrid(letters) {
     })
 
     // Replace grid contents.
-    let grid = document.getElementById("container-grid");
+    let grid = element("container-grid");
     grid.replaceChildren(...lettersElements);
 }
 

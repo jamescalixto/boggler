@@ -54,6 +54,8 @@
       complete: function (result) {
         let wordlist = result.data.flat();
         setUp(wordlist);
+
+        setUpDoneOrNew();
       },
     });
   </script>

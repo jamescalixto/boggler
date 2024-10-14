@@ -105,8 +105,10 @@ header {
 #container-ui {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    align-items: center;;
+    justify-content: space-around;
     margin: 10px auto;
+    min-height: 2em;
     max-width: 400px;
     text-align: center;
     background-color: var(--bg);
@@ -114,6 +116,11 @@ header {
 
 #container-ui {
     max-width: 300px;
+}
+
+#button-new-game {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 #container-notifications {

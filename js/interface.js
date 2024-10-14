@@ -1,6 +1,7 @@
 // Store variables.
 var global_canEnterWords = false;
 var global_gameTimer;
+var global_gameTick;
 var global_grid;
 var global_words;
 var global_foundWords;
@@ -9,6 +10,49 @@ var global_foundWords;
 // Helper function.
 function element(el) {
     return document.getElementById(el);
+}
+
+// Left pad with three zeroes.
+function lpad(i) {
+    return String(i).padStart(3, '0');
+}
+
+// Done or new game setup.
+function setUpDoneOrNew() {
+    var ng = document.getElementById("button-new-game");
+    if (global_canEnterWords) { // game in progress - end game.
+        ng.innerText = "end";
+        ng.addEventListener("click", () => reveal());
+    } else { // game is over - new game.
+        ng.innerText = "new";
+        ng.addEventListener("click", () => newGame(global_wordlist));
+    }
+}
+
+// Reset clock.
+function resetClock() {
+    let holder = element("container-timer");
+    holder.innerText = lpad(TIMER_LENGTH);
+}
+
+// End clock.
+function endClock() {
+    window.clearInterval(global_gameTick);
+    let holder = element("container-timer");
+    holder.innerText = lpad(0);
+}
+
+// Tick the clock.
+function tickClock() {
+    let holder = element("container-timer");
+    if (parseInt(holder.innerText) === 0) {
+        holder.innerText = lpad(TIMER_LENGTH);
+    } else {
+        holder.innerText = lpad(Math.max(0, holder.innerText - 1));
+    }
+    if (parseInt(holder.innerText) === 0) {
+        window.clearInterval(global_gameTick);
+    }
 }
 
 // Allow or disallow input.
@@ -136,12 +180,17 @@ function buildGrid(letters) {
 
 // Reveal.
 function reveal() {
+    endClock();
+    clearTimeout(global_gameTimer);
+    clearInterval(global_gameTick);
     toggleInput(false);
     for (let word of global_words) {
         if (!global_foundWords.has(word)) {
             enterWordInterface(word, true);
         }
     }
+    displayMessage("time's up!");
+    setUpDoneOrNew();
 }
 
 
@@ -149,6 +198,13 @@ function reveal() {
 function newGameInterface(letters) {
     displayMessage("new game..."); // clear messages.
     global_foundWords = new Set(); // clear found words.
+    element("container-answers").replaceChildren(); // clear answers.
+    clearTimeout(global_gameTimer);
+    clearInterval(global_gameTick);
+    global_gameTimer = setTimeout(reveal, TIMER_LENGTH*S_TO_MS); // start timer.
+    resetClock(); // reset clock.
+    global_gameTick = setInterval(tickClock, S_TO_MS); // tick timer.
     buildGrid(letters); // build interface.
     toggleInput(true) // allow input.
+    setUpDoneOrNew();
 }

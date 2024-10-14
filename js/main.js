@@ -1,3 +1,6 @@
+var global_wordlist;
+var global_trie;
+
 // Return a random sample of an array.
 function sample(arr, rng) {
     return arr[Math.floor(rng() * arr.length)];
@@ -17,22 +20,23 @@ function shuffleArray(arr, rng) {
 
 // Set up elements.
 function setUp(wordlist) {
+    global_wordlist = wordlist;
+    global_trie = buildTrie(wordlist);
     setUpKeyboardInput();
     newGame(wordlist);
 }
 
 // Start a new game.
 function newGame(wordlist) {
-    let trie = buildTrie(wordlist);
     let grid = generateGrid(DICE_SETS["Boggle Deluxe (5x5)"], Date.now());
     global_grid = grid;
     
     adjacency = buildAdjacency(grid.length);
 
-    words = getWordsInGrid(grid, wordlist, trie, adjacency);
+    words = getWordsInGrid(grid, wordlist, global_trie, adjacency);
     global_words = words;
 
-    heatmap = buildHeatmap(grid, wordlist, trie, adjacency);
+    heatmap = buildHeatmap(grid, wordlist, global_trie, adjacency);
 
     newGameInterface(grid);
 }

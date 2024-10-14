@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Playfair+Display:700|PT+Serif:400,400i|Roboto:700");
 
 :root {
+    --bg: whitesmoke;
     --red: #f08080;
     --orange: #f0b87f;
     --green: #b8f07f;
@@ -24,6 +25,10 @@
 
 .gray {
     background-color: var(--gray);
+}
+
+.text-gray {
+    color: var(--color-text-light);
 }
 
 h1 {
@@ -92,9 +97,29 @@ header {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: whitesmoke;
+    background-color: var(--bg);
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-size: 10vw;
+}
+
+#container-ui {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 10px auto;
+    max-width: 400px;
+    text-align: center;
+    background-color: var(--bg);
+}
+
+#container-ui {
+    max-width: 300px;
+}
+
+#container-notifications {
+    max-width: 400px;
+    margin: 10px auto;
+    text-align: center;
 }
 
 #container-input {
@@ -110,11 +135,37 @@ header {
     font-size: 8vw;
 }
 
+#input-display::after {
+    content: "|";
+    display: inline-block;
+    position: relative;
+    right: -2px;
+    top: -2px;
+    color: var(--color-text-dark);
+    animation: blink 1s step-start 0s infinite;
+  }
+
 #container-answers {
     max-width: 600px;
     text-align: center;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-size: 4vw;
+}
+
+.answer {
+    display: inline-block;
+    position: relative;
+    margin-right: 10px;
+}
+
+.answer:after {
+    content: "|";
+    margin-left: 10px;
+}
+
+.answer:last-child:after {
+    content: none;
+    margin-right: 0px;
 }
 
 @media (min-width: 600px) {
@@ -127,6 +178,42 @@ header {
     }
     #container-answers {
         font-size: 1em;
+    }
+}
+
+@keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  
+@-webkit-keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes flashgreen {
+    0% {
+        background-color: var(--bg);
+    }
+    50% {
+        background-color: var(--green);
+    }
+    100% {
+        background-color: var(--bg);
+    }
+}
+
+@keyframes flashred {
+    0% {
+        background-color: var(--bg);
+    }
+    50% {
+        background-color: var(--red);
+    }
+    100% {
+        background-color: var(--bg);
     }
 }
 

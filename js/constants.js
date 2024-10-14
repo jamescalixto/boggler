@@ -31,6 +31,22 @@ function scoreWord(grid, word) {
     }
 }
 
+function congratulateWord(word) {
+    if (word.length < 3) {
+        return "...";
+    } else if (word.length == 3 || word.length == 4) {
+        return "ok!"; 
+    } else if (word.length == 5) {
+        return "good!";
+    } else if (word.length == 6) {
+        return "great!";
+    } else if (word.length == 7) {
+        return "excellent!";
+    } else {
+        return "phenomenal!";
+    }
+}
+
 // Underlined letters.
 UNDERLINED = ["M", "W", "Z"];
 

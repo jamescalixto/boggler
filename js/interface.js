@@ -1,6 +1,28 @@
+// Store variables.
+var global_canEnterWords = false;
+var global_gameTimer;
+var global_grid;
+var global_words;
+var global_foundWords;
+
+
 // Helper function.
 function element(el) {
     return document.getElementById(el);
+}
+
+// Allow or disallow input.
+function toggleInput(state=null) {
+    if (state === null) {
+        global_canEnterWords = !global_canEnterWords;
+    } else {
+        global_canEnterWords = state;
+    }
+    if (global_canEnterWords) {
+        element("input-display").classList.remove("hidden");
+    } else {
+        element("input-display").classList.add("hidden");
+    }
 }
 
 // Test if a key is a letter.
@@ -30,19 +52,52 @@ function enterWord() {
     let holder = element("input-display");
     let word = holder.innerText;
     if (word.length > 0) {
-        let answers = element("container-answers");
-        answers.innerText += ` ${word}`;
+        if (global_foundWords.has(word)) {
+            displayMessage("already found!", false);
+        } else if (!global_words.has(word)) {
+            displayMessage("not a valid word!", false);
+        } else {
+            displayMessage(congratulateWord(word));
+            enterWordInterface(word);
+        }
         holder.innerText = "";
     }
 }
 
+// Add word to interface.
+function enterWordInterface(word, gray=false) {
+    let answers = element("container-answers");
+    newAnswer = document.createElement("span");
+    newAnswer.className = "answer";
+    newAnswer.innerText = `${word} (${scoreWord(global_grid, word)})`;
+    if (gray) {
+        newAnswer.classList.add("text-gray");
+    }
+    answers.appendChild(newAnswer);
+    global_foundWords.add(word);
+}
+
+
+// Display message.
+function displayMessage(message, good=true) {
+    let holder = element("container-notifications");
+    holder.innerText = message;
+    void element.offsetHeight;
+    holder.style.animation = null;
+    holder.offsetHeight;
+    if (good) {
+        holder.style.animation = "flashgreen 0.5s";
+    } else {
+        holder.style.animation = "flashred 0.5s";
+    }
+}
 
 // Set up keyboard input function.
 function setUpKeyboardInput() {
     document.addEventListener("keydown", function (e) {
         // Only input letters or recognize backspaces and enter keys.
         // Don't recognize it when popups or dropdown are active.
-        if (true) {
+        if (global_canEnterWords) {
             if (isLetter(e.key)) {
                 event.preventDefault();
                 addLetterEntry(e.key);
@@ -76,4 +131,24 @@ function buildGrid(letters) {
     // Replace grid contents.
     let grid = document.getElementById("container-grid");
     grid.replaceChildren(...lettersElements);
+}
+
+
+// Reveal.
+function reveal() {
+    toggleInput(false);
+    for (let word of global_words) {
+        if (!global_foundWords.has(word)) {
+            enterWordInterface(word, true);
+        }
+    }
+}
+
+
+// Start new game.
+function newGameInterface(letters) {
+    displayMessage("new game..."); // clear messages.
+    global_foundWords = new Set(); // clear found words.
+    buildGrid(letters); // build interface.
+    toggleInput(true) // allow input.
 }
